@@ -53,8 +53,12 @@ void viewerOneOff(visualization::PCLVisualizer& viewer)
 int main()
 {
 	// 读入数据
+	//Mat color = imread("im0.png"); // RGB
+	//Mat depth = imread("disp0.png", IMREAD_UNCHANGED);// depth
+
 	Mat color = imread("000045_10.png"); // RGB
-	Mat depth = imread("000045_10sgmres.png", IMREAD_UNCHANGED);// depth
+	Mat depth = imread("000045_10res.png", IMREAD_UNCHANGED);// depth
+
 	if (color.empty() || depth.empty())
 	{
 		cout << "The image is empty, please check it!" << endl;
@@ -71,7 +75,7 @@ int main()
 	{
 		for (int col = 0; col < depth.cols; col++)
 		{
-			ushort d = depth.ptr<ushort>(row)[col];
+			ushort d = depth.ptr<uint>(row)[col];
 
 			if (d == 0)
 				continue;
@@ -101,6 +105,10 @@ int main()
 	visualization::CloudViewer viewer("Cloud Viewer");
 	viewer.showCloud(cloud);
 	viewer.runOnVisualizationThreadOnce(viewerOneOff);
+
+	std::string filename("000045_10.pcd");
+	pcl::PCDWriter writer;
+	writer.write(filename, *cloud);
 
 	while (!viewer.wasStopped())
 	{
