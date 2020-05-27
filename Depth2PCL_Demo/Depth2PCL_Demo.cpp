@@ -31,12 +31,19 @@ using namespace pcl;
 
 int user_data;
 // 相机内参
-const double u0 = 1288.147;
-const double v0 = 973.571;
-const double fx = 4152.073;
-const double fy = 4152.073;
-const double baseline = 176.252;
-const double doffs = 213.084;	// 代表两个相机主点在x方向上的差距, doffs = |u1 - u0|
+//const double u0 = 1288.147;
+//const double v0 = 973.571;
+//const double fx = 4152.073;
+//const double fy = 4152.073;
+//const double baseline = 176.252;
+//const double doffs = 213.084;	// 代表两个相机主点在x方向上的差距, doffs = |u1 - u0|
+
+const double u0 = 696.0217;
+const double v0 = 224.1806;
+const double fx = 959.7910;
+const double fy = 956.9251;
+const double baseline = 540.0000;
+const double doffs = 0.2698;	// 代表两个相机主点在x方向上的差距, doffs = |u1 - u0|
 
 void viewerOneOff(visualization::PCLVisualizer& viewer)
 {
@@ -46,8 +53,8 @@ void viewerOneOff(visualization::PCLVisualizer& viewer)
 int main()
 {
 	// 读入数据
-	Mat color = imread("im0.png"); // RGB
-	Mat depth = imread("disp0.png", IMREAD_UNCHANGED);// depth
+	Mat color = imread("000045_10.png"); // RGB
+	Mat depth = imread("000045_10sgmres.png", IMREAD_UNCHANGED);// depth
 	if (color.empty() || depth.empty())
 	{
 		cout << "The image is empty, please check it!" << endl;
