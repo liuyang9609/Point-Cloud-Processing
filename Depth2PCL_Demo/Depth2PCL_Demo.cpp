@@ -56,8 +56,8 @@ int main()
 	//Mat color = imread("im0.png"); // RGB
 	//Mat depth = imread("disp0.png", IMREAD_UNCHANGED);// depth
 
-	Mat color = imread("000045_10.png"); // RGB
-	Mat depth = imread("000045_10res.png", IMREAD_UNCHANGED);// depth
+	Mat color = imread("000146_10.png"); // RGB
+	Mat depth = imread("000146_10sgmres.png");// depth
 
 	if (color.empty() || depth.empty())
 	{
@@ -76,7 +76,7 @@ int main()
 		for (int col = 0; col < depth.cols; col++)
 		{
 			ushort d = depth.ptr<uint>(row)[col];
-
+			
 			if (d == 0)
 				continue;
 			PointXYZRGB p;
@@ -106,7 +106,7 @@ int main()
 	viewer.showCloud(cloud);
 	viewer.runOnVisualizationThreadOnce(viewerOneOff);
 
-	std::string filename("000045_10.pcd");
+	std::string filename("000146_10.pcd");
 	pcl::PCDWriter writer;
 	writer.write(filename, *cloud);
 
