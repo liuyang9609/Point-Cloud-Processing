@@ -56,8 +56,8 @@ int main()
 	//Mat color = imread("im0.png"); // RGB
 	//Mat depth = imread("disp0.png", IMREAD_UNCHANGED);// depth
 
-	Mat color = imread("000146_10.png"); // RGB
-	Mat depth = imread("000146_10sgmres.png");// depth
+	Mat color = imread("000048_10.png"); // RGB
+	Mat depth = imread("000048_10_res_64d_proc.png");// depth
 
 	if (color.empty() || depth.empty())
 	{
