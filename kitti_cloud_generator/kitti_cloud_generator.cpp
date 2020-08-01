@@ -1,5 +1,4 @@
-﻿//export LD_LIBRARY_PATH=/home/vanessadantas/Downloads/opencv-3.4.1/Build/lib
-#include <iostream>
+﻿#include <iostream>
 #include <opencv2/opencv.hpp>
 #include <pcl/io/io.h>  
 #include <pcl/io/pcd_io.h>  
