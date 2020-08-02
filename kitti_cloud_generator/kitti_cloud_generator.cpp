@@ -21,8 +21,8 @@ int main()
 		0, 0, 0, 718.856,
 		0, 0, 1 / 0.54, 0);
 
-	leftimage = imread("000048L.png");
-	rightimage = imread("000048R.png");
+	leftimage = imread("left_img/000040_10.png");
+	rightimage = imread("right_img/000040_10.png");
 
 	kcg.cloudGenerator(leftimage, rightimage, Q);
 	//kcg.disparityMapGenerator(leftimage,rightimage);
