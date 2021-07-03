@@ -55,6 +55,26 @@ int main( )
     //     cloud->points[nIndex].z *= 100;
     // }
 
+    ////增采样
+    //pcl::PointCloud<pcl::PointXYZ>::Ptr filteredCloud(new pcl::PointCloud<pcl::PointXYZ>);
+    //// 滤波对象
+    //pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointXYZ> filter;
+    //filter.setInputCloud(cloud);
+    ////建立搜索对象
+    //pcl::search::KdTree<pcl::PointXYZ>::Ptr kdtree;
+    //filter.setSearchMethod(kdtree);
+    ////设置搜索邻域的半径为3cm
+    //filter.setSearchRadius(0.03);
+    //// Upsampling 采样的方法有 DISTINCT_CLOUD, RANDOM_UNIFORM_DENSITY
+    //filter.setUpsamplingMethod(pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointXYZ>::SAMPLE_LOCAL_PLANE);
+    //// 采样的半径是
+    //filter.setUpsamplingRadius(0.01);
+    //// 采样步数的大小
+    //filter.setUpsamplingStepSize(0.03);
+
+    //filter.process(*filteredCloud);
+
+
     // 计算法向量
     printf("开始计算法向量\n");
     pcl::NormalEstimation<PoinT, pcl::Normal> n;//法线估计对象
@@ -91,7 +111,7 @@ int main( )
 
     // 开始表面重建 ********************************************************************
 
-    //创建Poisson对象，并设置参数
+    ////创建Poisson对象，并设置参数
     //pcl::Poisson<pcl::PointNormal> pn;
     //pn.setConfidence(false); //是否使用法向量的大小作为置信信息。如果false，所有法向量均归一化。
     //pn.setDegree(2); //设置参数degree[1,5],值越大越精细，耗时越久。
@@ -123,8 +143,10 @@ int main( )
      pcl::GreedyProjectionTriangulation<pcl::PointNormal> gp3;   // 定义三角化对象
      pcl::PolygonMesh mesh;                // 存储最终三角化的网络模型
      // Set the maximum distance between connected points (maximum edge length)
-     gp3.setSearchRadius(0.025);  // 设置连接点之间的最大距离，（即是三角形最大边长）
+     //gp3.setSearchRadius(0.025);  // 设置连接点之间的最大距离，（即是三角形最大边长）
+     gp3.setSearchRadius(100);  // 设置连接点之间的最大距离，（即是三角形最大边长）
      // 设置各参数值
+     //gp3.setMu(2.5);  // 设置被样本点搜索其近邻点的最远距离为2.5，为了使用点云密度的变化
      gp3.setMu(2.5);  // 设置被样本点搜索其近邻点的最远距离为2.5，为了使用点云密度的变化
      gp3.setMaximumNearestNeighbors(100);// 设置样本点可搜索的邻域个数
      gp3.setMaximumSurfaceAngle(M_PI / 4);  // 设置某点法线方向偏离样本点法线的最大角度45
@@ -143,39 +165,39 @@ int main( )
      std::cerr << "快速三角化 完成" << std::endl;
 
 
-    // //移动立方体算法
-    // pcl::MarchingCubes<pcl::PointNormal> *mc;
-    // mc = new pcl::MarchingCubesHoppe<pcl::PointNormal>();
-    // /*
-    //   if (hoppe_or_rbf == 0)
-    //     mc = new pcl::MarchingCubesHoppe<pcl::PointNormal> ();
-    //   else
-    //   {
-    //     mc = new pcl::MarchingCubesRBF<pcl::PointNormal> ();
-    //     (reinterpret_cast<pcl::MarchingCubesRBF<pcl::PointNormal>*> (mc))->setOffSurfaceDisplacement (off_surface_displacement);
-    //   }
-    // */
-    // //创建多变形网格，用于存储结果
-    // pcl::PolygonMesh mesh;
-    // //设置MarchingCubes对象的参数
-    // mc->setIsoLevel(0.0f);
-    // mc->setGridResolution(50, 50, 50);
-    // mc->setPercentageExtendGrid(0.0f);
-    // //设置搜索方法
-    // mc->setInputCloud(cloud_with_normals);
-    // //执行重构，结果保存在mesh中
-    // mc->reconstruct(mesh);
-    // //保存网格图
-    // pcl::io::saveVTKFile(name + "-cubes.ply", mesh);
-    // std::cerr << "移动立方体 完成" << std::endl;
+     ////移动立方体算法
+     //pcl::MarchingCubes<pcl::PointNormal> *mc;
+     //mc = new pcl::MarchingCubesHoppe<pcl::PointNormal>();
+     ///*
+     //  if (hoppe_or_rbf == 0)
+     //    mc = new pcl::MarchingCubesHoppe<pcl::PointNormal> ();
+     //  else
+     //  {
+     //    mc = new pcl::MarchingCubesRBF<pcl::PointNormal> ();
+     //    (reinterpret_cast<pcl::MarchingCubesRBF<pcl::PointNormal>*> (mc))->setOffSurfaceDisplacement (off_surface_displacement);
+     //  }
+     //*/
+     ////创建多变形网格，用于存储结果
+     //pcl::PolygonMesh mesh;
+     ////设置MarchingCubes对象的参数
+     //mc->setIsoLevel(0.0f);
+     //mc->setGridResolution(50, 50, 50);
+     //mc->setPercentageExtendGrid(0.0f);
+     ////设置搜索方法
+     //mc->setInputCloud(cloud_with_normals);
+     ////执行重构，结果保存在mesh中
+     //mc->reconstruct(mesh);
+     ////保存网格图
+     //pcl::io::saveVTKFile("cubes.ply", mesh);
+     //std::cerr << "移动立方体 完成" << std::endl;
 
 
 
     // 显示结果图
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer(new pcl::visualization::PCLVisualizer("3D viewer"));
-    viewer->setBackgroundColor(0, 0, 0);
+    viewer->setBackgroundColor(255, 255, 255);
     viewer->addPolygonMesh(mesh, "my");
-    viewer->addCoordinateSystem(50.0);
+    viewer->addCoordinateSystem(0.1);
     viewer->initCameraParameters();
     while (!viewer->wasStopped()) {
         viewer->spinOnce(100);

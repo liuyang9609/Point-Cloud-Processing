@@ -6,7 +6,7 @@ int main( )
 {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
-	if (pcl::io::loadPCDFile<pcl::PointXYZ>("Modelpcd.pcd", *cloud) == -1)//*打开点云文件
+	if (pcl::io::loadPCDFile<pcl::PointXYZ>("15.pcd", *cloud) == -1)//*打开点云文件
 	{
 		PCL_ERROR("Couldn't read file.\n");
 		return(-1);

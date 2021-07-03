@@ -17,43 +17,43 @@ KITTICloudGenerator::KITTICloudGenerator() {
 
 void viewerOneOff(visualization::PCLVisualizer& viewer)
 {
-	viewer.setBackgroundColor(0.0, 0.0, 0.0);
+	viewer.setBackgroundColor(255.0, 255.0, 255.0);
 }
 
-//void KITTICloudGenerator::disparityMapGenerator(Mat leftImage, Mat rightImage, int minDisparity,
-//	int blockSize, int disp12MaxDiff, int preFilterCap, int uniquenessRatio, int speckleWindowSize, int speckleRange) {
-//	//pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_rgbxyz (new pcl::PointCloud<pcl::PointXYZRGB>);
-//	int numDisparities = 64 - minDisparity;
-//	Mat leftImage_gray, rightImage_gray, disparity, true_disparity;
-//	int image_channels = leftImage_gray.channels();
-//	int P1 = 8 * image_channels * blockSize * blockSize;
-//	int P2 = 32 * image_channels * blockSize * blockSize;
-//	cv::cvtColor(leftImage, leftImage_gray, cv::COLOR_BGR2GRAY);
-//	cv::cvtColor(rightImage, rightImage_gray, cv::COLOR_BGR2GRAY);
-//	cv::Ptr<cv::StereoSGBM> stereo = cv::StereoSGBM::create(
-//		minDisparity, numDisparities, blockSize,
-//		P1, P2, disp12MaxDiff, preFilterCap,
-//		uniquenessRatio, speckleWindowSize,
-//		speckleRange, cv::StereoSGBM::MODE_SGBM_3WAY
-//	);
-//	stereo->compute(leftImage_gray, rightImage_gray, disparity);
-//
-//	disparity.convertTo(true_disparity, CV_32F, 1.0 / 16.0, 0.0);
-//
-//	imwrite("disparity.png", true_disparity);
-//
-//	imshow("Disparity", true_disparity);
-//	waitKey();
-//
-//
-//}
+void KITTICloudGenerator::disparityMapGenerator(Mat leftImage, Mat rightImage, int minDisparity,
+	int blockSize, int disp12MaxDiff, int preFilterCap, int uniquenessRatio, int speckleWindowSize, int speckleRange) {
+	//pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_rgbxyz (new pcl::PointCloud<pcl::PointXYZRGB>);
+	int numDisparities = 64 - minDisparity;
+	Mat leftImage_gray, rightImage_gray, disparity, true_disparity;
+	int image_channels = leftImage_gray.channels();
+	int P1 = 8 * image_channels * blockSize * blockSize;
+	int P2 = 32 * image_channels * blockSize * blockSize;
+	cv::cvtColor(leftImage, leftImage_gray, cv::COLOR_BGR2GRAY);
+	cv::cvtColor(rightImage, rightImage_gray, cv::COLOR_BGR2GRAY);
+	cv::Ptr<cv::StereoSGBM> stereo = cv::StereoSGBM::create(
+		minDisparity, numDisparities, blockSize,
+		P1, P2, disp12MaxDiff, preFilterCap,
+		uniquenessRatio, speckleWindowSize,
+		speckleRange, cv::StereoSGBM::MODE_SGBM_3WAY
+	);
+	stereo->compute(leftImage_gray, rightImage_gray, disparity);
+
+	disparity.convertTo(true_disparity, CV_32F, 1.0 / 16.0, 0.0);
+
+	imwrite("disparity.png", true_disparity);
+
+	imshow("Disparity", true_disparity);
+	waitKey();
+
+
+}
 
 void KITTICloudGenerator::cloudGenerator(Mat leftImage, Mat rightImage, Mat Q, int minDisparity,
 	int blockSize, int disp12MaxDiff, int preFilterCap, int uniquenessRatio, int speckleWindowSize, int speckleRange) {
 
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_rgbxyz(new pcl::PointCloud<pcl::PointXYZRGB>);
 
-	int numDisparities = 64 - minDisparity;
+	int numDisparities = 256 - minDisparity;
 	Mat leftImage_gray, rightImage_gray, disparity, true_disparity;
 	Mat cloud_xyz;
 
@@ -92,6 +92,8 @@ void KITTICloudGenerator::cloudGenerator(Mat leftImage, Mat rightImage, Mat Q, i
 			cv::Vec3b color = leftImage.at<cv::Vec3b>(i, j);
 
 			if (fabs(point[2] - max_z) < FLT_EPSILON || fabs(point[2]) > max_z) continue;
+			if (point[2] > 5) continue; //ÂË³ý¾àÀë
+			if (color[0] > 100) continue; //ÂË³ýÑÕÉ«
 
 			pcl::PointXYZRGB point3D;
 

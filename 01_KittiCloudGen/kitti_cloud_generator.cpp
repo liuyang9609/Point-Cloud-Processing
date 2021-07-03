@@ -21,11 +21,11 @@ int main()
 		0, 0, 0, 718.856,
 		0, 0, 1 / 0.54, 0);
 
-	leftimage = imread("left_img/000040_10.png");
-	rightimage = imread("right_img/000040_10.png");
+	leftimage = imread("left_img/reL16.bmp");
+	rightimage = imread("right_img/reR16.bmp");
 
 	kcg.cloudGenerator(leftimage, rightimage, Q);
-	//kcg.disparityMapGenerator(leftimage,rightimage);
+	kcg.disparityMapGenerator(leftimage,rightimage);
 
 	return 0;
 }
